@@ -25,6 +25,8 @@
   }
 
   pdfViewer.addEventListener("load", async () => {
+    if (pdfViewer.src.startsWith("blob:")) return
+
     const pdfData = await getPdfData(pdfViewer.contentWindow)
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" })
     const pdfObjectURL = URL.createObjectURL(pdfBlob)
