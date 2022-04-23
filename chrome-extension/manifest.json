@@ -1,0 +1,19 @@
+{
+  "name": "Bypass NTUT portal captcha",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "description": "Bypass captcha in NTUT portal's login page",
+  "homepage_url": "https://github.com/mon-jai/ntut-violentmonkey-scripts",
+  "permissions": ["cookies"],
+  "content_scripts": [
+    {
+      "matches": ["https://nportal.ntut.edu.tw/index.do*"],
+      "css": ["inject.css"],
+      "js": ["inject.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
