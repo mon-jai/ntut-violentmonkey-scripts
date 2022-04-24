@@ -4,3 +4,9 @@
   flex-direction: column;
   justify-content: space-evenly;
 }
+
+.authcode.co,
+.authcode.co + .co,
+.authcode.co + .co > input {
+  display: none;
+}

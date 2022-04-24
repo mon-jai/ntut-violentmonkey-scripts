@@ -1,4 +1,3 @@
-document.querySelector(".authcode.co + .co").remove()
-document.querySelector(".authcode.co").remove()
+document.getElementById("authcode").remove()
 
 chrome.runtime.sendMessage({})

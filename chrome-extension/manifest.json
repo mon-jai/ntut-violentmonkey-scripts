@@ -5,6 +5,7 @@
   "description": "Bypass captcha in NTUT portal's login page",
   "homepage_url": "https://github.com/mon-jai/ntut-violentmonkey-scripts",
   "permissions": ["cookies"],
+  "host_permissions": ["https://nportal.ntut.edu.tw/*"],
   "content_scripts": [
     {
       "matches": ["https://nportal.ntut.edu.tw/index.do*"],
