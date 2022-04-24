@@ -6,7 +6,6 @@
 }
 
 .authcode.co,
-.authcode.co + .co,
-.authcode.co + .co > input {
+.authcode.co + .co {
   display: none;
 }
