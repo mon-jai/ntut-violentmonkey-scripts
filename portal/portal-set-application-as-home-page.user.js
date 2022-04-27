@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name        Set "Applications" as home page
+// @name        [NTUT Portal] Set "Applications" as home page
 // @namespace   Violentmonkey Scripts
 // @match       https://nportal.ntut.edu.tw/myPortal.do*
 // @grant       none
 // @run-at      document-end
 // @version     1.0
 // @author      Loh Ka Hong
-// @description Set "Applications" as NTUT portal's home page
+// @description Set "Applications" as NTUT Portal's home page
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==
 

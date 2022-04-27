@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name        Autofill login page captcha
+// @name        [NTUT Portal/iStudy] Autofill login page captcha
 // @namespace   Violentmonkey Scripts
 // @match       https://nportal.ntut.edu.tw/index.do
 // @grant       none
 // @require     https://unpkg.com/tesseract.js@^2/dist/tesseract.min.js
 // @version     1.0
 // @author      Loh Ka Hong
-// @description Autofill captcha in NTUT portal's login page
+// @description Autofill captcha in NTUT service's login page
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==
 

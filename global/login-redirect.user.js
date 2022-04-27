@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        NTUT Portal/iStudy login redirect
+// @name        [NTUT Portal/iStudy] Login redirect
 // @namespace   Violentmonkey Scripts
 // @match       https://nportal.ntut.edu.tw/*
 // @grant       none

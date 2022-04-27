@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Change iStudy PDF viewer
+// @name        [iStudy] Change iStudy PDF viewer
 // @namespace   Violentmonkey Scripts
 // @match       https://istudy.ntut.edu.tw/learn/index.php
 // @grant       none
