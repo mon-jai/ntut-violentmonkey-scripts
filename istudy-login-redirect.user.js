@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name        iStudy login redirect
+// @name        Portal/iStudy login redirect
 // @namespace   Violentmonkey Scripts
 // @match       https://nportal.ntut.edu.tw/*
 // @grant       none
 // @run-at      document-start
 // @version     1.0
 // @author      Loh Ka Hong
-// @description Access iStudy with the link "https://nportal.ntut.edu.tw/ssoIndex.do?apOu=ischool_plus_", and get redirected after successful login
+// @description Access NTUT Portal with "https://nportal.ntut.edu.tw/myPortal.do" and iStudy with "https://nportal.ntut.edu.tw/ssoIndex.do?apOu=ischool_plus_", then get redirected after successful login
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==
 
@@ -24,11 +24,21 @@
 
   const pathname = document.location.pathname
 
-  if (pathname === "/ssoIndex.do") {
+  // Portal page
+  if (pathname === "/myPortal.do") {
+    redirectIfLoginIsRequired()
+    sessionStorage.removeItem("redirect-to-istudy")
+  }
+  // iStudy entry page
+  else if (pathname === "/ssoIndex.do") {
     redirectIfLoginIsRequired(() => sessionStorage.setItem("redirect-to-istudy", true))
-  } else if (pathname === "/login.do") {
+  }
+  // Login successful/unsuccessful page
+  else if (pathname === "/login.do") {
+    // If a "login again" message is displayed, redirect user to login page
     redirectIfLoginIsRequired()
 
+    // Redirect user to iStudy on successful login
     // The following code runs before DOM parsing, and therefore before any script tag is executed
     if (sessionStorage.getItem("redirect-to-istudy") === "true") {
       sessionStorage.removeItem("redirect-to-istudy")
