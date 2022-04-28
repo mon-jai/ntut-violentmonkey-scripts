@@ -17,7 +17,7 @@
 
     pdfViewer.contentDocument.body.insertAdjacentHTML(
       "beforeend",
-      "<style>body{background-color:rgb(82,86,89);background-image:none}#outerContainer{display:none}<style>"
+      "<style>body{background-color:rgb(82,86,89);background-image:none}<style>"
     )
 
     const pdfURL = `https://istudy.ntut.edu.tw/learn/path/${encodeURI(
