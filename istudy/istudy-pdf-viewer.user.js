@@ -15,11 +15,6 @@
   pdfViewer.addEventListener("load", async () => {
     if (pdfViewer.contentDocument.body.id === "builtin-pdf-viewer") return
 
-    pdfViewer.contentDocument.body.insertAdjacentHTML(
-      "beforeend",
-      "<style><style>"
-    )
-
     const pdfURL = `https://istudy.ntut.edu.tw/learn/path/${encodeURI(
       pdfViewer.contentDocument.head.innerHTML.match(/"(getPDF.php\?id=.*)"/)[1]
     )}`
