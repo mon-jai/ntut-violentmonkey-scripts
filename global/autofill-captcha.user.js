@@ -10,6 +10,7 @@
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==
 
+"use strict"
 ;(async () => {
   function imgToBase64(img) {
     const c = document.createElement("canvas")
