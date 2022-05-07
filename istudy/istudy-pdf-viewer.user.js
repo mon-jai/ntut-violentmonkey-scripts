@@ -47,8 +47,7 @@ const pdfViewerObjectURL = URL.createObjectURL(pdfViewerBlob, { type: "text/html
 
 // Avoid sending duplicate requests for the same PDF file
 setSynchronizedInterval(() => {
-  // `pdfViewerEl.contentDocument` will be null
-  // If the course material is served from a different domain
+  // `pdfViewerEl.contentDocument` will be null if the course material is served from a different domain
   if (pdfViewerEl.contentDocument?.title !== "PDF.js viewer") return
 
   const pdfURL = `https://istudy.ntut.edu.tw/learn/path/${
