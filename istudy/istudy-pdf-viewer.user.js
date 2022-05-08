@@ -53,7 +53,11 @@ setSynchronizedInterval(() => {
     const pdfBlob = await pdfResponse.blob()
     const pdfObjectURL = URL.createObjectURL(pdfBlob)
 
-    // If a new document is attached to "s_main" before downloading complete, only the old one will be modified
+    // Prevent a rare race condition,
+    // where the user navigate to a different course material before fetching of the old one was completed
+    // `documentToDisplayPdf` will be null as the referenced document will have already been detached and destroyed
+    if (documentToAttachPdf === null) return
+
     documentToDisplayPdf.getElementById("viewer").src = pdfObjectURL
     documentToDisplayPdf.getElementById("fab-button").href = pdfObjectURL
   })()
