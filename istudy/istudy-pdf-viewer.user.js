@@ -34,7 +34,8 @@ const pdfViewerObjectURL = createPdfViewerObjectURL()
 
 // Avoid sending duplicate requests for PDF files
 setSynchronizedInterval(() => {
-  if (pdfViewerEl.contentDocument.title !== "PDF.js viewer") return
+  // `pdfViewerEl.contentDocument` will be null if the course material is served from a different domain
+  if (pdfViewerEl.contentDocument?.title !== "PDF.js viewer") return
 
   const pdfURL = `https://istudy.ntut.edu.tw/learn/path/${
     pdfViewerEl.contentDocument.head.innerHTML.match(/getPDF\.php\?id=[^'"`]+/)[0]
