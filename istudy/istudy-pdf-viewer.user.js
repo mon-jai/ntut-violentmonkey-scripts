@@ -29,10 +29,28 @@ function setSynchronizedInterval(handler, timeout) {
   }, timeout)
 }
 
+async function fetchAndEmbedPdf(responsePromise, documentRef) {
+  const pdfResponse = await responsePromise
+  const pdfBlob = await pdfResponse.blob()
+  const pdfObjectURL = URL.createObjectURL(pdfBlob)
+
+  // After fetching completed, the current property should in theory hold a reference of the pdf viewer's document object
+  // As loading it should be almost instant
+  const { current: documentToEmbedPdf } = documentRef
+
+  // Prevent a rare race condition,
+  // where the user navigate to a different course material before fetching of the old one was completed
+  // `documentToDisplayPdf` will be null as the referenced document will have already been detached and destroyed
+  if (documentToEmbedPdf === null) return
+
+  documentToEmbedPdf.getElementById("viewer").src = pdfObjectURL
+  documentToEmbedPdf.getElementById("fab-button").href = pdfObjectURL
+}
+
 const pdfViewerEl = document.getElementById("s_main")
 const pdfViewerObjectURL = createPdfViewerObjectURL()
 
-// Avoid sending duplicate requests for PDF files
+// Avoid sending duplicate requests for the same PDF file
 setSynchronizedInterval(() => {
   // `pdfViewerEl.contentDocument` will be null if the course material is served from a different domain
   if (pdfViewerEl.contentDocument?.title !== "PDF.js viewer") return
@@ -41,24 +59,12 @@ setSynchronizedInterval(() => {
     pdfViewerEl.contentDocument.head.innerHTML.match(/getPDF\.php\?id=[^'"`]+/)[0]
   }`
   const referrer = pdfViewerEl.contentWindow.location.href
-  let documentToDisplayPdf = pdfViewerEl.contentDocument // Default value
+  const documentRef = { current: pdfViewerEl.contentDocument } // Default value
 
   pdfViewerEl.src = pdfViewerObjectURL
   // Keep a reference of the current document object
-  pdfViewerEl.addEventListener("load", () => (documentToDisplayPdf = pdfViewerEl.contentDocument), { once: true })
+  pdfViewerEl.addEventListener("load", () => (documentRef.current = pdfViewerEl.contentDocument), { once: true })
 
   // The following code run asynchronously
-  ;(async () => {
-    const pdfResponse = await fetch(pdfURL, { referrer, credentials: "include" })
-    const pdfBlob = await pdfResponse.blob()
-    const pdfObjectURL = URL.createObjectURL(pdfBlob)
-
-    // Prevent a rare race condition,
-    // where the user navigate to a different course material before fetching of the old one was completed
-    // `documentToDisplayPdf` will be null as the referenced document will have already been detached and destroyed
-    if (documentToAttachPdf === null) return
-
-    documentToDisplayPdf.getElementById("viewer").src = pdfObjectURL
-    documentToDisplayPdf.getElementById("fab-button").href = pdfObjectURL
-  })()
+  fetchAndEmbedPdf(fetch(pdfURL, { referrer, credentials: "include" }), documentRef)
 }, 10)
