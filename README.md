@@ -2,7 +2,7 @@
 
 Some useful Violentmonkey scripts for NTUT portal/iStudy.
 
-For functions of individual scripts, please refer to the description field of the respective file.
+For details on the function of individual scripts, refer to the description field of the respective file.
 
 # Installation
 
