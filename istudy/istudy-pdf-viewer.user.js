@@ -11,60 +11,87 @@
 
 "use strict"
 
-function createPdfViewerObjectURL() {
-  const styleString = `body{margin:0;background-color:rgb(82,86,89)}iframe{width:100%;height:100%;border:none}.mdc-fab{box-shadow:0 3px 5px -1px rgb(0 0 0/20%),0 6px 10px 0 rgb(0 0 0/14%),0 1px 18px 0 rgb(0 0 0/12%);display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:56px;height:56px;position:absolute;right:16px;bottom:16px;border-radius:16px;background-color:rgb(50,54,57)}.mdc-fab:before{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' width='24' fill='%23FFF'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z'/%3E%3C/svg%3E");content:"";width:24px;height:24px}`
-  const pdfViewerHTML = `<style>${styleString}</style><iframe id="viewer"></iframe><a class="mdc-fab" id="fab-button" target="_blank"></a>`
-  const pdfViewerBlob = new Blob([pdfViewerHTML], { type: "text/html" })
-  return URL.createObjectURL(pdfViewerBlob)
+function html([htmlText]) {
+  return htmlText.trim()
 }
 
 // `handler` will be executed `timeout` ms after the previous run was completed
 function setSynchronizedInterval(handler, timeout) {
+  const startTime = performance.now()
+
   setTimeout(() => {
     try {
       handler()
     } finally {
-      setSynchronizedInterval(handler, timeout)
+      setSynchronizedInterval(handler, timeout - (performance.now() - startTime))
     }
   }, timeout)
 }
 
-async function fetchAndEmbedPdf(responsePromise, documentRef) {
-  const pdfResponse = await responsePromise
-  const pdfBlob = await pdfResponse.blob()
-  const pdfObjectURL = URL.createObjectURL(pdfBlob)
+const pdfViewerHtml = html`
+  <style>
+    body {
+      margin: 0;
+      background-color: rgb(82, 86, 89);
+    }
 
-  // After fetching completed, the current property should in theory hold a reference of the pdf viewer's document object
-  // As loading it should be almost instant
-  const { current: documentToEmbedPdf } = documentRef
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
-  // Prevent a rare race condition,
-  // where the user navigate to a different course material before fetching of the old one was completed
-  // `documentToDisplayPdf` will be null as the referenced document will have already been detached and destroyed
-  if (documentToEmbedPdf === null) return
+    .mdc-fab {
+      box-shadow: 0 3px 5px -1px rgb(0 0 0/20%), 0 6px 10px 0 rgb(0 0 0/14%), 0 1px 18px 0 rgb(0 0 0/12%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 56px;
+      height: 56px;
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      border-radius: 16px;
+      background-color: rgb(50, 54, 57);
+    }
 
-  documentToEmbedPdf.getElementById("viewer").src = pdfObjectURL
-  documentToEmbedPdf.getElementById("fab-button").href = pdfObjectURL
-}
+    .mdc-fab:before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' width='24' fill='%23FFF'%3E%3Cpath d='M5 21Q4.175 21 3.587 20.413Q3 19.825 3 19V5Q3 4.175 3.587 3.587Q4.175 3 5 3H11Q11.425 3 11.713 3.287Q12 3.575 12 4Q12 4.425 11.713 4.712Q11.425 5 11 5H5Q5 5 5 5Q5 5 5 5V19Q5 19 5 19Q5 19 5 19H19Q19 19 19 19Q19 19 19 19V13Q19 12.575 19.288 12.287Q19.575 12 20 12Q20.425 12 20.712 12.287Q21 12.575 21 13V19Q21 19.825 20.413 20.413Q19.825 21 19 21ZM9 15Q8.725 14.725 8.725 14.3Q8.725 13.875 9 13.6L17.6 5H15Q14.575 5 14.288 4.712Q14 4.425 14 4Q14 3.575 14.288 3.287Q14.575 3 15 3H20Q20.425 3 20.712 3.287Q21 3.575 21 4V9Q21 9.425 20.712 9.712Q20.425 10 20 10Q19.575 10 19.288 9.712Q19 9.425 19 9V6.4L10.375 15.025Q10.1 15.3 9.7 15.3Q9.3 15.3 9 15Z'/%3E%3C/svg%3E");
+      content: "";
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+  <iframe id="viewer"></iframe>
+  <a class="mdc-fab" id="fab-button" target="_blank"></a>
+`
 
 const pdfViewerEl = document.getElementById("s_main")
-const pdfViewerObjectURL = createPdfViewerObjectURL()
+const pdfViewerObjectURL = URL.createObjectURL(new Blob([pdfViewerHtml], { type: "text/html" }))
 
-// Avoid sending duplicate requests for the same PDF file
+// Avoid making duplicate requests for the same PDF file
+// The function will only run again after `pdfViewerEl` has been modified and `pdfViewerEl.contentDocument.title` has been updated to ""
 setSynchronizedInterval(() => {
   // `pdfViewerEl.contentDocument` will be null if the course material is served from a different domain
   if (pdfViewerEl.contentDocument?.title !== "PDF.js viewer") return
 
-  const pdfURL = `https://istudy.ntut.edu.tw/learn/path/${
-    pdfViewerEl.contentDocument.head.innerHTML.match(/getPDF\.php\?id=[^'"`]+/)[0]
-  }`
+  const pdfPathname = pdfViewerEl.contentDocument.head.innerHTML.match(/getPDF\.php\?id=[^'"`]+/)[0]
+  const pdfURL = `https://istudy.ntut.edu.tw/learn/path/${pdfPathname}`
   const referrer = pdfViewerEl.contentWindow.location.href
-  const documentRef = { current: pdfViewerEl.contentDocument } // Default value
+  const pdfFetchPromise = fetch(pdfURL, { referrer, credentials: "include" })
 
+  pdfViewerEl.addEventListener(
+    "load",
+    async () => {
+      const pdfResponse = await pdfFetchPromise
+      const pdfBlob = await pdfResponse.blob()
+      const pdfObjectURL = URL.createObjectURL(pdfBlob)
+
+      pdfViewerEl.contentDocument.getElementById("viewer").src = pdfObjectURL
+      pdfViewerEl.contentDocument.getElementById("fab-button").href = pdfObjectURL
+    },
+    { once: true }
+  )
   pdfViewerEl.src = pdfViewerObjectURL
-  // Keep a reference of the current document object
-  pdfViewerEl.addEventListener("load", () => (documentRef.current = pdfViewerEl.contentDocument), { once: true })
-
-  // The following code run asynchronously
-  fetchAndEmbedPdf(fetch(pdfURL, { referrer, credentials: "include" }), documentRef)
 }, 10)
