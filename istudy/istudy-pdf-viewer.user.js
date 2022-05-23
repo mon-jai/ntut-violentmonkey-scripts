@@ -20,11 +20,13 @@ function createPdfViewerObjectURL() {
 
 // `handler` will be executed `timeout` ms after the previous run was completed
 function setSynchronizedInterval(handler, timeout) {
+  const startTime = performance.now()
+
   setTimeout(() => {
     try {
       handler()
     } finally {
-      setSynchronizedInterval(handler, timeout)
+      setSynchronizedInterval(handler, timeout - (performance.now() - startTime))
     }
   }, timeout)
 }
@@ -50,7 +52,8 @@ async function fetchAndEmbedPdf(responsePromise, documentRef) {
 const pdfViewerEl = document.getElementById("s_main")
 const pdfViewerObjectURL = createPdfViewerObjectURL()
 
-// Avoid sending duplicate requests for the same PDF file
+// Avoid making duplicate requests for the same PDF file
+// The function will only run again after `pdfViewerEl` has been modified and `pdfViewerEl.contentDocument.title` has been updated to ""
 setSynchronizedInterval(() => {
   // `pdfViewerEl.contentDocument` will be null if the course material is served from a different domain
   if (pdfViewerEl.contentDocument?.title !== "PDF.js viewer") return
