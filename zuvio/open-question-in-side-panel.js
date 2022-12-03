@@ -28,17 +28,21 @@ injectCSS(
   document,
   css`
     #content {
-      display: flex;
       width: 100%;
-      max-width: 1320px;
+      max-width: unset;
       height: 100%;
+      display: flex;
+      justify-content: center;
     }
 
     .irs-clicker-list,
     .irs-history-questions {
-      flex: 1;
-      min-width: 320px;
+      border-right: 1px solid #e6e6e6;
       overflow: auto;
+    }
+
+    .i-c-l-questions {
+      max-width: 400px;
     }
 
     .active-question .i-c-l-q-q-b-top {
@@ -57,7 +61,16 @@ injectCSS(
 
 const questionContent = document.createElement("iframe")
 questionContent.id = "question-content"
+questionContent.style.paddingBottom = document.getElementById("footer").offsetHeight
 questionContent.onload = () => {
+  // After an answer is submitted
+  if (new URL(questionContent.contentWindow.location.href).pathname === window.location.pathname) {
+    // Reload iframe with the same url
+    // Open the answered question
+    questionContent.src = questionContent.src
+    return
+  }
+
   injectCSS(
     questionContent.contentDocument,
     css`
