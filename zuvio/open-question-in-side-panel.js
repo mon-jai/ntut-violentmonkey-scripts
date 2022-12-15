@@ -45,11 +45,6 @@ injectCSS(
       max-width: 400px;
     }
 
-    .no-active {
-      width: 400px;
-      padding: 0px 24px;
-    }
-
     .active-question .i-c-l-q-q-b-top {
       border-left-width: 4px;
       border-left-style: solid;
