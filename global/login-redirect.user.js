@@ -12,12 +12,11 @@
 
 "use strict"
 
-function redirectIfLoginIsRequired(redirectedCallback) {
+function redirectIfLoginIsRequired() {
   // `readystatechange` is only available on `document`
   // https://www.w3.org/TR/2014/NOTE-html5-diff-20141209/#document-extensions
   document.addEventListener("readystatechange", () => {
     if (document.documentElement.outerHTML.includes("重新登入")) {
-      if (redirectedCallback) redirectedCallback()
       document.location.replace("https://nportal.ntut.edu.tw/index.do")
     }
   })
@@ -27,12 +26,13 @@ const pathname = document.location.pathname
 
 // Portal page
 if (pathname === "/myPortal.do") {
-  redirectIfLoginIsRequired()
   sessionStorage.removeItem("redirect-to-istudy")
+  redirectIfLoginIsRequired()
 }
 // iStudy entry page
 else if (pathname === "/ssoIndex.do") {
-  redirectIfLoginIsRequired(() => sessionStorage.setItem("redirect-to-istudy", true))
+  sessionStorage.setItem("redirect-to-istudy", true)
+  redirectIfLoginIsRequired()
 }
 // Login successful/unsuccessful page
 else if (pathname === "/login.do") {
@@ -41,7 +41,7 @@ else if (pathname === "/login.do") {
 
   // Redirect user to iStudy on successful login
   // The following code runs before DOM parsing, and therefore before any script tag is executed
-  if (sessionStorage.getItem("redirect-to-istudy") === "true") {
+  if (JSON.parse(sessionStorage.getItem("redirect-to-istudy")) === true) {
     sessionStorage.removeItem("redirect-to-istudy")
     document.location.replace("https://nportal.ntut.edu.tw/ssoIndex.do?apOu=ischool_plus_")
   }
