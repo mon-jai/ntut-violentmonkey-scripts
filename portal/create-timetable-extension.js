@@ -11,9 +11,8 @@
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==
 
-function css([cssText]) {
-  return cssText.trim()
-}
+// https://stackoverflow.com/a/44254377/11077662
+const css = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
 
 const downloadButtonCSS = css`
   body {

@@ -11,9 +11,8 @@
 
 "use strict"
 
-function html([htmlText]) {
-  return htmlText.trim()
-}
+// https://stackoverflow.com/a/44254377/11077662
+const html = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
 
 const pdfViewerHtml = html`
   <style>
