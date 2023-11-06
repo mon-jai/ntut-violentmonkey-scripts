@@ -166,7 +166,7 @@ aptreeMain = async () => {
       .match(/['"]([^'"]+)['"]\)$/)[1]
       .replace(/（Link\s\d）/, "")
     const alternativeServerEls = [...document.querySelectorAll(`${appLinkSelector}[onclick*="${appName}"]`)].filter(
-      el => el !== apLink
+      el => el !== apLink,
     )
 
     if (alternativeServerEls.length == 0) continue

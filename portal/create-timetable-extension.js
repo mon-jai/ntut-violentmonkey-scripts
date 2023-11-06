@@ -27,13 +27,18 @@ const downloadButtonCSS = css`
   }
 
   .mdc-fab {
-    box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
+    box-shadow:
+      0 3px 5px -1px rgb(0 0 0 / 20%),
+      0 6px 10px 0 rgb(0 0 0 / 14%),
+      0 1px 18px 0 rgb(0 0 0 / 12%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
     height: 56px;
-    transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 15ms linear 30ms,
+    transition:
+      box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 15ms linear 30ms,
       transform 0.27s cubic-bezier(0, 0, 0.2, 1) 0ms;
     background-color: #645f38;
 
@@ -50,7 +55,10 @@ const downloadButtonCSS = css`
   }
 
   .mdc-fab:hover {
-    box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%), 0 8px 10px 1px rgb(0 0 0 / 14%), 0 3px 14px 2px rgb(0 0 0 / 12%);
+    box-shadow:
+      0 5px 5px -3px rgb(0 0 0 / 20%),
+      0 8px 10px 1px rgb(0 0 0 / 14%),
+      0 3px 14px 2px rgb(0 0 0 / 12%);
   }
 
   .mdc-fab:before {
@@ -66,7 +74,9 @@ const downloadButtonCSS = css`
     left: -50%;
     width: 200%;
     height: 200%;
-    transition: opacity 15ms linear, background-color 15ms linear;
+    transition:
+      opacity 15ms linear,
+      background-color 15ms linear;
     z-index: 1;
     position: absolute;
     opacity: 0;
@@ -84,8 +94,20 @@ const downloadButtonCSS = css`
 
 const timeTableCSS = css`
   body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial,
-      sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      "Helvetica Neue",
+      "Noto Sans",
+      "Liberation Sans",
+      Arial,
+      sans-serif,
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji";
     background: none;
     display: flex;
     min-height: 100vh;
