@@ -9,7 +9,7 @@
 // @description 12/1/2022, 2:56:05 PM
 // ==/UserScript==
 
-// https://stackoverflow.com/a/44254377/11077662
+// https://stackoverflow.com/a/44254377/
 const css = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
 
 function injectCSS(documentObject, CSSString) {
@@ -31,12 +31,9 @@ injectCSS(
 
     .irs-clicker-list,
     .irs-history-questions {
+      width: 400px;
       border-right: 1px solid #e6e6e6;
       overflow: auto;
-    }
-
-    .i-c-l-questions {
-      max-width: 400px;
     }
 
     .active-question .i-c-l-q-q-b-top {
@@ -50,7 +47,7 @@ injectCSS(
       border: none;
       background-color: #f9f9f9;
     }
-  `
+  `,
 )
 
 const questionContent = document.createElement("iframe")
@@ -71,7 +68,7 @@ questionContent.onload = () => {
       #header .irs-header {
         display: none;
       }
-    `
+    `,
   )
 }
 document.getElementById("content").appendChild(questionContent)
