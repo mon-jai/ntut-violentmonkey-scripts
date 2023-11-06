@@ -127,9 +127,8 @@ const customStylesHTML = html`<style>
   }
 </style>`
 
-function html(strings, ...values) {
-  return String.raw({ raw: strings }, ...values)
-}
+// https://stackoverflow.com/a/44254377/
+const html = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
 
 function waitForSelector(selector) {
   return new Promise(resolve => {
@@ -144,19 +143,13 @@ function waitForSelector(selector) {
   })
 }
 
-const original_aptreeMain = aptreeMain
-aptreeMain = async () => {
-  original_aptreeMain()
+async function showQuickActionPage() {
+  window.aptreeMain()
 
-  const apLinks = await waitForSelector(appLinkSelector)
-
-  for (const apLink of apLinks) {
+  for (const apLink of await waitForSelector(appLinkSelector)) {
     // https://stackoverflow.com/a/16820058
     // Skip the element if it is a alternative server link
     if (!document.body.contains(apLink)) continue
-
-    // Make text break with line
-    apLink.innerHTML = apLink.innerHTML.replaceAll("&nbsp;", " ")
 
     // Alternative: apLink.innerText.replaceAll(" ", "\xa0").replace(/（Link\s\d）/, "")
     const appName = apLink
@@ -166,29 +159,28 @@ aptreeMain = async () => {
     const alternativeServerEls = [...document.querySelectorAll(`${appLinkSelector}[onclick*="${appName}"]`)].filter(
       el => el !== apLink,
     )
-
     if (alternativeServerEls.length == 0) continue
 
     // Display alternative server links alongside primary server
-    apLink.innerHTML =
-      html`
-        <a target="_blank" href=${apLink.children[0].href}>${appName.replaceAll(/\s/g, " ")}</a>
-        <br />
-      ` +
-      alternativeServerEls
-        .map((alternativeServerEl, index) => {
-          const href = alternativeServerEl.children[0].href
-          const innerText = "[" + (index + 2).toLocaleString("zh-Hans-CN-u-nu-hanidec") + "機]"
-          return html`<a href="${href}" target="_blank">${innerText}</a>`
-        })
-        .join("&nbsp;")
+    apLink.insertAdjacentHTML(
+      "beforeend",
+      html`<div>
+        ${alternativeServerEls
+          .map((alternativeServerEl, index) => {
+            const href = alternativeServerEl.children[0].href
+            const innerText = "[" + (index + 2).toLocaleString("zh-Hans-CN-u-nu-hanidec") + "機]"
+            return html`<a href="${href}" target="_blank">${innerText}</a>`
+          })
+          .join("&nbsp;")}
+      </div>`,
+    )
 
     for (const alternativeServerEl of alternativeServerEls) alternativeServerEl.remove()
   }
 }
 
-toIndex = aptreeMain
-aptreeMain()
+showQuickActionPage()
+window.toIndex = showQuickActionPage
 
 document.body.insertAdjacentHTML("beforeend", customStylesHTML)
 waitForSelector("a[href*='toIndex']").then(([element]) => element.remove())
