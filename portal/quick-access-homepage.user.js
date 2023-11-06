@@ -21,27 +21,26 @@ const customStylesHTML = html`<style>
 
   #header {
     background-size: cover;
-  }
 
-  #header .headerLogo {
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
+    .headerLogo {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
 
-  #header .navigation > .nav.clearfix > ul {
-    z-index: 2;
+    .navigation ul {
+      z-index: 2;
+    }
   }
 
   #floatingBoxParentContainer > center {
-    height: 100%;
     padding: 8px;
-  }
 
-  #floatingBoxParentContainer > center > .eipInfoMainWithBorder {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+    > .eipInfoMainWithBorder {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   #divAptreeSso {
@@ -51,81 +50,80 @@ const customStylesHTML = html`<style>
   .eipTable2 > tbody {
     display: grid;
     grid-auto-columns: 1fr;
-    grid-template-rows: max-content auto;
-  }
 
-  .eipTable2 > tbody > tr {
-    min-width: 250px;
-  }
+    > tr {
+      min-width: 250px;
+      padding: 0.75rem 0;
 
-  .eipTable2 > tbody > tr:not(:last-child):not(:nth-last-child(2)) {
-    border-right: 1px solid #cccccc;
-  }
+      &:not(:last-child):not(:nth-last-child(2)) {
+        border-right: 1px solid #cccccc;
+      }
 
-  .eipTable2 > tbody > tr {
-    padding: 0.75rem 0;
-  }
+      /* 人事系統 尚無資料 */
+      &:has(+ tr .eipAlert),
+      &:has(.eipAlert) {
+        display: none !important;
+      }
 
-  /* 人事系統 尚無資料 */
-  .eipItem:has(+ tr .eipAlert),
-  tr:has(.eipAlert) {
-    display: none !important;
-  }
+      /* APP 市集 */
+      &:has(+ tr span[onclick*="market_appView_copy"]),
+      &:has(span[onclick*="market_appView_copy"]) {
+        display: none !important;
+      }
+    }
 
-  /* APP 市集 */
-  .eipItem:has(+ tr span[onclick*="market_appView_copy"]),
-  tr:has(span[onclick*="market_appView_copy"]) {
-    display: none !important;
-  }
+    > tr.eipItem {
+      grid-row: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-  .eipTable2 > tbody > tr.eipItem {
-    grid-row: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+      > td {
+        /* English UI */
+        text-align: center;
 
-  /* English UI */
-  .eipTable2 > tbody > tr.eipItem > td {
-    text-align: center;
-  }
+        > img[src="template/ntut/arrow_down.gif"] {
+          display: none;
+        }
+      }
+    }
 
-  .eipTable2 > tbody > tr.eipItem > td > img[src="template/ntut/arrow_down.gif"] {
-    display: none;
-  }
+    > tr.eipItem + tr > td > table > tbody {
+      &,
+      & > tr.eipData {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
 
-  tbody:has(> tr.eipData),
-  tr.eipData {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
+      > tr.eipData {
+        padding-right: 0.75rem;
 
-  tr.eipData {
-    padding-right: 0.75rem;
-  }
+        > td {
+          width: 100%;
+          display: flex;
 
-  tr.eipData > td {
-    width: 100%;
-    display: flex;
-  }
+          &:not(:has(a)) {
+            display: none;
+          }
 
-  tr.eipData > td:not(:has(a)) {
-    display: none;
-  }
+          > img {
+            &[src="images/tree/point.gif"] {
+              height: calc(1rem * 1.5);
+            }
 
-  tr.eipData > td > img {
-    height: calc(1rem * 1.5);
-  }
+            &[src="images/tree/ap.png"] {
+              display: none;
+            }
+          }
 
-  tr.eipData > td > img[src="images/tree/ap.png"] {
-    display: none;
-  }
-
-  tr.eipData > td > span {
-    font-size: 1rem;
-    line-height: 1.5;
-    display: inline-block; /* Trim whitespace for innerText */
+          > span {
+            font-size: 1rem;
+            line-height: 1.5;
+          }
+        }
+      }
+    }
   }
 </style>`
 
