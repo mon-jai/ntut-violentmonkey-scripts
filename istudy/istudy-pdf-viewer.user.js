@@ -11,7 +11,7 @@
 
 "use strict"
 
-// https://stackoverflow.com/a/44254377/11077662
+// https://stackoverflow.com/a/44254377/
 const html = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
 
 const pdfViewerHtml = html`
@@ -44,6 +44,10 @@ const pdfViewerHtml = html`
       bottom: 16px;
       border-radius: 16px;
       overflow: hidden;
+    }
+
+    .mdc-fab:not([href]) {
+      display: none;
     }
 
     .mdc-fab:hover {
@@ -86,24 +90,27 @@ const pdfViewerEl = document.getElementById("s_main")
 const pdfViewerObjectURL = URL.createObjectURL(new Blob([pdfViewerHtml], { type: "text/html" }))
 let oldPdfPathname = ""
 
+// Do not wait until `pdfViewerEl.contentDocument` is fully loaded
 setInterval(() => {
   // `pdfViewerEl.contentDocument` will be null if the course material is served from a different domain
   if (pdfViewerEl.contentDocument?.title !== "PDF.js viewer") return
 
   const pdfPathname = pdfViewerEl.contentDocument.head.innerHTML.match(/getPDF\.php\?id=[^'"`]+/)[0]
-
+  // Sometimes the same interval get invoked too fast that the document is not even modified
   if (pdfPathname === oldPdfPathname) return
   oldPdfPathname = pdfPathname
 
   const pdfURL = `https://istudy.ntut.edu.tw/learn/path/${pdfPathname}`
   const referrer = pdfViewerEl.contentWindow.location.href
-  const pdfFetchPromise = fetch(pdfURL, { referrer, credentials: "include" })
+  const pdfBlobPromise = fetch(pdfURL, { referrer, credentials: "include" }).then(response => response.blob())
 
   pdfViewerEl.addEventListener(
     "load",
     async () => {
-      const pdfResponse = await pdfFetchPromise
-      const pdfBlob = await pdfResponse.blob()
+      // Sometimes `pdfViewerEl` would refresh without a page reload (like clicking the "教材及錄影" button in sidebar)
+      pdfViewerEl.contentWindow.addEventListener("beforeunload", () => (oldPdfPathname = ""))
+
+      const pdfBlob = await pdfBlobPromise
       const pdfObjectURL = URL.createObjectURL(pdfBlob)
 
       pdfViewerEl.contentDocument.getElementById("viewer").src = pdfObjectURL
@@ -111,5 +118,6 @@ setInterval(() => {
     },
     { once: true }
   )
+
   pdfViewerEl.src = pdfViewerObjectURL
 }, 10)
