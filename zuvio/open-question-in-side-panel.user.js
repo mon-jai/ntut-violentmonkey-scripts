@@ -20,6 +20,7 @@ const routeToFunctionName = {
   bulletin: "irs_getBulletin",
   forum: "irs_getForum",
 }
+const { pathname: originalPathname } = window.location
 
 function injectCSS(documentObject, CSSString) {
   const style = documentObject.createElement("style")
@@ -85,11 +86,12 @@ injectCSS(
 
 for (const [route, functionName] of Object.entries(routeToFunctionName)) {
   window[functionName] = questionId => {
-    questionContent.src = `https://irs.zuvio.com.tw/student5/irs/${route}/${questionId}`
+    const url = `https://irs.zuvio.com.tw/student5/irs/${route}/${questionId}`
+    questionContent.src = url
+    history.pushState("", "", url)
 
     const activeQuestion = document.getElementsByClassName("active-question")[0]
     const quote = route !== "bulletin" ? "'" : ""
-
     if (activeQuestion) activeQuestion.classList.remove("active-question")
     document.querySelector(`[onclick^="${functionName}(${quote}${questionId}"]`).classList.add("active-question")
   }
@@ -99,9 +101,8 @@ const questionContent = document.createElement("iframe")
 questionContent.id = "question-content"
 questionContent.onload = () => {
   // After an answer is submitted
-  if (new URL(questionContent.contentWindow.location.href).pathname === window.location.pathname) {
-    // Reload iframe with the same url
-    // Open the answered question
+  if (new URL(questionContent.contentWindow.location.href).pathname === originalPathname) {
+    // Open the answered question (reload iframe with the same url)
     questionContent.src = questionContent.src
     return
   }
