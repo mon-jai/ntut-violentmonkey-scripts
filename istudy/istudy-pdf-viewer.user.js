@@ -12,7 +12,7 @@
 "use strict"
 
 // https://stackoverflow.com/a/44254377/
-const html = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
+const html = (raw, ...rest) => String.raw({ raw }, ...rest)
 
 const pdfViewerHtml = html`
   <style>
