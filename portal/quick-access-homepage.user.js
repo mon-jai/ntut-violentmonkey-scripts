@@ -12,6 +12,9 @@
 
 "use strict"
 
+// https://stackoverflow.com/a/44254377/
+const html = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
+
 const appLinkSelector = "span[onclick^=ssoLogAdd]"
 
 const customStylesHTML = html`<style>
@@ -109,7 +112,11 @@ const customStylesHTML = html`<style>
 
           > img {
             &[src="images/tree/point.gif"] {
-              height: calc(1rem * 1.5);
+              height: 1.5rem;
+            }
+
+            &[src="images/tree/apfolder.png"] {
+              align-self: center;
             }
 
             &[src="images/tree/ap.png"] {
@@ -126,9 +133,6 @@ const customStylesHTML = html`<style>
     }
   }
 </style>`
-
-// https://stackoverflow.com/a/44254377/
-const html = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
 
 function waitForSelector(selector) {
   return new Promise(resolve => {
