@@ -34,7 +34,7 @@ styleElement.innerHTML = css`
   }
 
   body {
-    width: 1140px;
+    max-width: 1140px;
     margin: 100px auto;
     background: none;
     font-family: system-ui;
