@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        [Portal] Syllabus page improvements
+// @name        [NTUT Portal] Syllabus page improvements
 // @namespace   Violentmonkey Scripts
 // @match       https://aps.ntut.edu.tw/course/*/ShowSyllabus.jsp
 // @grant       none

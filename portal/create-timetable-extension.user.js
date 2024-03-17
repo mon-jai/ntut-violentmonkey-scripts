@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Timetable Extension Creator
+// @name        [NTUT Portal] Timetable Extension Creator
 // @namespace   Violentmonkey Scripts
 // @match       https://aps.ntut.edu.tw/course/tw/Select.jsp?*
 // @grant       none
@@ -11,7 +11,7 @@
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==
 
-// https://stackoverflow.com/a/44254377/11077662
+// https://stackoverflow.com/a/44254377/
 const css = (strings, ...rest) => String.raw({ raw: strings }, ...rest)
 
 const downloadButtonCSS = css`
