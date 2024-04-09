@@ -5,7 +5,7 @@
 // @grant       none
 // @run-at      document-end
 // @version     1.0
-// @author      Loh Ka Hong
+// @author      陸嘉康 <https://github.com/mon-jai>
 // @description Quickly navigate to various school portal systems from the homepage
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==

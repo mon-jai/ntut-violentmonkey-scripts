@@ -7,7 +7,7 @@
 // @match       https://irs.zuvio.com.tw/student5/irs/course/*
 // @grant       none
 // @version     1.0
-// @author      -
+// @author      陸嘉康 <https://github.com/mon-jai>
 // @description 12/1/2022, 2:56:05 PM
 // ==/UserScript==
 

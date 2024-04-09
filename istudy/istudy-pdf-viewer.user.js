@@ -4,7 +4,7 @@
 // @match       https://istudy.ntut.edu.tw/learn/index.php
 // @grant       none
 // @version     1.0
-// @author      Loh Ka Hong
+// @author      陸嘉康 <https://github.com/mon-jai>
 // @description Display iStudy PDF files with browser's builtin PDf viewer
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==

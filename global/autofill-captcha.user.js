@@ -5,7 +5,7 @@
 // @grant       none
 // @require     https://unpkg.com/tesseract.js@^2/dist/tesseract.min.js
 // @version     1.0
-// @author      Loh Ka Hong
+// @author      陸嘉康 <https://github.com/mon-jai>
 // @description Autofill captcha in NTUT service's login page
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==

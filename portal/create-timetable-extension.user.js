@@ -6,7 +6,7 @@
 // @run-at      document-end
 // @require     https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.*/dist/zip.min.js
 // @version     1.0
-// @author      Loh Ka Hong
+// @author      陸嘉康 <https://github.com/mon-jai>
 // @description Create timetable extension from https://aps.ntut.edu.tw/course/tw/Select.jsp?format=-2&code={(}student-id}&year={school-year}&sem={semester}
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==

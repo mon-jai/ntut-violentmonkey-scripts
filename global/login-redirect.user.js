@@ -5,7 +5,7 @@
 // @grant       none
 // @run-at      document-start
 // @version     1.0
-// @author      Loh Ka Hong
+// @author      陸嘉康 <https://github.com/mon-jai>
 // @description Access NTUT Portal with "https://nportal.ntut.edu.tw/myPortal.do" and iStudy with "https://nportal.ntut.edu.tw/ssoIndex.do?apOu=ischool_plus_oauth", then get redirected after successful login
 // @homepage    https://github.com/mon-jai/ntut-violentmonkey-scripts
 // ==/UserScript==

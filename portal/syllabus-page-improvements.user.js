@@ -4,7 +4,7 @@
 // @match       https://aps.ntut.edu.tw/course/*/ShowSyllabus.jsp
 // @grant       none
 // @version     1.0
-// @author      -
+// @author      陸嘉康 <https://github.com/mon-jai>
 // @description Improvements to the readability of NTUT Portal's syllabus page
 // ==/UserScript==
 
