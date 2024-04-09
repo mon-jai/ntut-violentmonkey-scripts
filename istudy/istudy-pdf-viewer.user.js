@@ -16,6 +16,11 @@ const html = (raw, ...rest) => String.raw({ raw }, ...rest)
 
 const pdfViewerHtml = html`
   <style>
+    /* https://chromium.googlesource.com/chromium/src/+/refs/tags/124.0.6367.29/chrome/browser/resources/pdf/elements/shared-vars.css */
+    :root {
+      --viewer-pdf-toolbar-background-color: rgb(50, 54, 57);
+    }
+
     body {
       margin: 0;
       background-color: rgb(82, 86, 89);
@@ -42,7 +47,7 @@ const pdfViewerHtml = html`
         box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1),
         opacity 15ms linear 30ms,
         transform 0.27s cubic-bezier(0, 0, 0.2, 1) 0ms;
-      background-color: rgb(50, 54, 57);
+      background-color: var(--viewer-pdf-toolbar-background-color);
 
       position: absolute;
       right: 16px;
