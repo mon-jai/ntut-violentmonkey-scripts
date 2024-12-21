@@ -35,11 +35,12 @@ function imgToBase64(img) {
       return
     }
 
-    for (const [index, authCharacter] of authCharacterInputs.entries()) authCharacter.value = code[index]
-    authCharacterInputs[0].dispatchEvent(new Event("input"))
+    for (const [index, char] of Array.from(code).entries()) authCharacterInputs[index].value = char
+    authCodeInput.value = code
 
     authCodeInput.style.display = "none"
     authCharacters.style.display = ""
+    authCharacterInputs[0].dispatchEvent(new Event("input"))
   }
 
   const authCodeInput = document.getElementById("authcode")
@@ -80,13 +81,17 @@ function imgToBase64(img) {
   authCharacters.style.display = "none"
 
   const authCharacterInputs = Array.from(authCharacters.children)
-  for (const authCharacterInput of authCharacterInputs) {
+  for (const [index, authCharacterInput] of authCharacterInputs.entries()) {
     authCharacterInput.addEventListener("focus", ({ currentTarget }) => currentTarget.select())
     authCharacterInput.addEventListener("input", ({ currentTarget }) => {
-      currentTarget.value = currentTarget.value.toUpperCase()
-      currentTarget.select()
+      const normalizedChar = currentTarget.value
+        .toUpperCase()
+        // https://stackoverflow.com/a/58515363/
+        .replace(/[\uff01-\uff5e]/, fullWidthChar => String.fromCharCode(fullWidthChar.charCodeAt(0) - 0xfee0))
 
-      authCodeInput.value = authCharacterInputs.map(authCharacterInput => authCharacterInput.value).join("")
+      currentTarget.value = normalizedChar
+      currentTarget.select()
+      authCodeInput.value = Array.from(authCodeInput.value).with(index, normalizedChar).join("")
     })
   }
 
