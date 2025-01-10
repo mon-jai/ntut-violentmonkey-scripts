@@ -31,7 +31,7 @@ function injectCSS(documentObject, CSSString) {
 injectCSS(
   document,
   css`
-    #content {
+    #content:not(:has(.feedbacks > .no-active)) {
       max-width: unset;
       height: 100%;
       display: flex;
