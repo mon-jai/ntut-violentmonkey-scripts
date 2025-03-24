@@ -81,7 +81,7 @@ injectCSS(
     .course-info {
       width: 768px;
     }
-  `,
+  `
 )
 
 for (const [route, functionName] of Object.entries(routeToFunctionName)) {
@@ -90,10 +90,12 @@ for (const [route, functionName] of Object.entries(routeToFunctionName)) {
     questionContent.src = url
     history.pushState("", "", url)
 
-    const activeQuestion = document.getElementsByClassName("active-question")[0]
-    const quote = route !== "bulletin" ? "'" : ""
-    if (activeQuestion) activeQuestion.classList.remove("active-question")
-    document.querySelector(`[onclick^="${functionName}(${quote}${questionId}"]`).classList.add("active-question")
+    const lastActiveQuestion = document.getElementsByClassName("active-question")[0]
+    if (lastActiveQuestion) lastActiveQuestion.classList.remove("active-question")
+
+    const quote = route !== "bulletin" && route !== "question" ? "'" : ""
+    const activeQUestion = document.querySelector(`[onclick^="${functionName}(${quote}${questionId}"]`)
+    if (activeQUestion) activeQUestion.classList.add("active-question")
   }
 }
 
@@ -121,7 +123,7 @@ questionContent.onload = () => {
       .i-f-f-f-b-f-l-file-box {
         cursor: pointer;
       }
-    `,
+    `
   )
 
   const attachments = questionContent.contentDocument.getElementsByClassName("i-f-f-f-b-f-l-file-box")
